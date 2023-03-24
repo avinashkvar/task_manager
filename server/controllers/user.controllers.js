@@ -18,10 +18,8 @@ async function getAlluser() {
 }
 async function login({ email, password }) {
 	const user = await UserModel.findOne({
-		email: email,
-		authType: 'email-password',
-	});
-	console.log(user);
+		email: email});
+	//console.log(user);
 	if (!user) {
 		throw new Error('user is not found with the given email');
 	}
