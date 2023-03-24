@@ -4,6 +4,7 @@ const fileUpload = require('express-fileupload');
 const cors = require('cors');
 const userRouter = require('./routes/users.routes');
 const taskRouter = require('./routes/tasks.routes');
+const sprintsRouter = require('./routes/sprints.routes');
 const cloudinary = require('cloudinary').v2;
 require('dotenv').config();
 
@@ -26,6 +27,7 @@ app.use(express.json())
 
 app.use('/',userRouter)
 app.use('/',taskRouter)
+app.use('/',sprintsRouter)
 
 connect()
 	.then(() => app.listen(3001, () => console.log('listening on port 3001')))

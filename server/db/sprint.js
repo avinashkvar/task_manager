@@ -8,3 +8,7 @@ const SprintSchema = mongoose.Schema(
 		timestamps: true,
 	},
 );
+
+const SprintModel = mongoose.model('sprints',SprintSchema)
+
+module.exports = SprintModel

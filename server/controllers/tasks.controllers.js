@@ -1,3 +1,4 @@
+const SprintModel = require('../db/sprint');
 const { TaskModel } = require('../db/tasks');
 
 async function getTasks() {
@@ -5,8 +6,12 @@ async function getTasks() {
 	return tasks;
 }
 
-async function postTasks(body) {
+async function postTasks(body, id) {
 	let task = await TaskModel.create(body);
+	let tasks = await SprintModel.findById(id)
+	tasks = tasks.tasks;
+	tasks.push(task._id);
+	await SprintModel.findByIdAndUpdate({ _id: id }, { tasks });
 	return task;
 }
 
