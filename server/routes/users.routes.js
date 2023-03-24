@@ -42,6 +42,7 @@ userRouter.post('/login', async (req, res) => {
 userRouter.post('/register', async (req, res) => {
 	const body = req.body;
     const file = req.files
+	//console.log(file,body)
 	try {
 		const user = await register(body,file);
 		return res.send(user);
