@@ -1,13 +1,7 @@
 import React from 'react';
 import {
-	Card,
 	Button,
 	Text,
-	Avatar,
-	CardHeader,
-	CardBody,
-	CardFooter,
-	Flex,
 	Icon,
 	useDisclosure,
 	Modal,
@@ -19,7 +13,6 @@ import {
 	ModalFooter,
 	VStack,
 	Input,
-	Select,
 } from '@chakra-ui/react';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { useState } from 'react';
@@ -29,6 +22,7 @@ import Progress from './Progress';
 import Done from './Done';
 import Pending from './Pending';
 import Loader from '../Loader/Loader';
+import './scroll.css'
 
 const Sprint = ({ tasks, id }) => {
 	const [title, setTitle] = useState('');
@@ -56,68 +50,86 @@ const Sprint = ({ tasks, id }) => {
 			}}
 		>
 			<Button colorScheme="green" onClick={onOpen}>
-				Add Tasks
 				<Icon as={AiOutlinePlus}></Icon>
 			</Button>
 
-			{ loader ? <Loader/> : <div
-				style={{
-					display: 'flex',
-					gap: '10px',
-					justifyContent: 'space-evenly',
-				}}
-			>
+			{loader ? (
+				<Loader />
+			) : (
 				<div
 					style={{
-						width: 'auto',
-						boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px',
-						padding: '20px',
-						height: '500px',
-						overflow: 'scroll',
+						display: 'flex',
+						gap: '10px',
+						justifyContent: 'space-evenly',
 					}}
 				>
-					<Text fontWeight="bold" fontSize="23px">
-						Progress
-					</Text>
-					{tasks.map((e) => (
-						<div>
-							{e.status === 'progress' ? <Progress item={e} /> : null}
-						</div>
-					))}
+					<div
+						style={{
+							width: 'auto',
+							boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px',
+							padding: '20px',
+							height: '500px',
+							overflow: 'scroll',
+							overflowX: 'hidden',
+						}}
+						className="scroll"
+					>
+						<Text fontWeight="bold" fontSize="23px">
+							Progress
+						</Text>
+						{tasks.length > 0 &&
+							tasks.map((e) => (
+								<div>
+									{e.status === 'progress' ? (
+										<Progress item={e} />
+									) : null}
+								</div>
+							))}
+					</div>
+					<div
+						style={{
+							boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px',
+							padding: '20px',
+							height: '500px',
+							overflow: 'scroll',
+							overflowX: 'hidden',
+						}}
+						className="scroll"
+					>
+						<Text fontWeight="bold" fontSize="23px">
+							Done
+						</Text>
+						{tasks.length > 0 &&
+							tasks.map((e) => (
+								<div>
+									{e.status === 'done' ? <Done item={e} /> : null}
+								</div>
+							))}
+					</div>
+					<div
+						style={{
+							boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px',
+							padding: '20px',
+							height: '500px',
+							overflow: 'scroll',
+							overflowX: 'hidden',
+						}}
+						className="scroll"
+					>
+						<Text fontWeight="bold" fontSize="23px">
+							Pending
+						</Text>
+						{tasks.length > 0 &&
+							tasks.map((e) => (
+								<div>
+									{e.status === 'pending' ? (
+										<Pending item={e} />
+									) : null}
+								</div>
+							))}
+					</div>
 				</div>
-				<div
-					style={{
-						boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px',
-						padding: '20px',
-						height: '500px',
-						overflow: 'scroll',
-					}}
-				>
-					<Text fontWeight="bold" fontSize="23px">
-						Done
-					</Text>
-					{tasks.map((e) => (
-						<div>{e.status === 'done' ? <Done item={e} /> : null}</div>
-					))}
-				</div>
-				<div
-					style={{
-						boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px',
-						padding: '20px',
-						height: '500px',
-						overflow: 'scroll',
-					}}
-				>
-					<Text fontWeight="bold" fontSize="23px">
-						Pending
-					</Text>
-					{tasks.map((e) => (
-						<div>
-							{e.status === 'pending' ? <Pending item={e} /> : null}
-						</div>
-					))}
-				</div>
-			</div>}
+			)}
 			<Modal onClose={onClose} isOpen={isOpen} isCentered>
 				<ModalOverlay />
 				<ModalContent>

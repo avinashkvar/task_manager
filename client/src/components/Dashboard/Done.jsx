@@ -21,11 +21,13 @@ import {
 	ModalCloseButton,
 	useDisclosure,
 	HStack,
+	Input
 } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSprints } from '../../redux/action';
 import Loader from '../Loader/Loader';
 const Done = ({ item }) => {
+	const [search, setSearch] = useState('');
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const users = useSelector((store) => store.users);
 	const dispatch = useDispatch();
@@ -42,7 +44,7 @@ const Done = ({ item }) => {
 			},
 			body: JSON.stringify(payload),
 		}).then(() => {
-			dispatch(getSprints()).thne(() => setLoader(false));
+			dispatch(getSprints()).then(() => setLoader(false));
 		});
 	};
 	const handleSubmit = (id, userId) => {
@@ -119,8 +121,12 @@ const Done = ({ item }) => {
 							<ModalHeader>Assign to</ModalHeader>
 							<ModalCloseButton />
 							<ModalBody>
+								<Input
+									onChange={(e) => setSearch(e.target.value)}
+									placeholder="search users"
+								></Input>
 								{users
-									// .filter((e) => e.name.toLowerCase().includes(search))
+									.filter((e) => e.name.toLowerCase().includes(search))
 									.map((e) => (
 										<Card
 											p="5px 10px 5px 10px"

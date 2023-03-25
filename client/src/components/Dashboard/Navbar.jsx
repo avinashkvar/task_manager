@@ -38,9 +38,9 @@ const Navbar = () => {
 			) : (
 				<Flex alignItems="center">
 					<Text mr="10px" fontWeight="bold">
-						{user.name}
+						{user && user.name}
 					</Text>
-					<Avatar mr="10px" src={user.imageUrl} />
+					<Avatar mr="10px" src={user && user.imageUrl} />
 				</Flex>
 			)}
 		</Flex>

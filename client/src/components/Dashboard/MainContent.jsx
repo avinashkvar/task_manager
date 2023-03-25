@@ -18,7 +18,7 @@ const MainContent = () => {
 			{loader ? (
 				<Loader />
 			) : (
-				spirnts.map((e, i) => <Sprint key={i} tasks={e.tasks} id={e._id} />)
+				spirnts.length > 0 && spirnts.map((e, i) => <Sprint key={i} tasks={e.tasks} id={e._id} />)
 			)}
 		</div>
 	);

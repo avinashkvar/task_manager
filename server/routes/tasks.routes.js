@@ -3,6 +3,7 @@ const {
 	postTasks,
 	getTasks,
 	patchTask,
+	getUsersTasks,
 } = require('../controllers/tasks.controllers');
 
 const taskRouter = express.Router();
@@ -35,6 +36,16 @@ taskRouter.patch('/tasks/:id', async (req, res) => {
 		return res.status(201).send(data);
 	} catch (error) {
 		return res.status(200).json('error');
+	}
+});
+
+taskRouter.get('/tasks/:id', async (req, res) => {
+	const id = req.params.id;
+	try {
+		const data = await getUsersTasks(id);
+		return res.status(201).send(data);
+	} catch (error) {
+		return res.status(200).json(error);
 	}
 });
 

@@ -15,10 +15,14 @@ async function postTasks(body, id) {
 	return task;
 }
 async function patchTask(body,id){
-	console.log(body)
 	let task = await TaskModel.findByIdAndUpdate({_id:id},body)
 	console.log(task);
 	return task;
 }
 
-module.exports = { getTasks, postTasks,patchTask };
+async function getUsersTasks(id){
+     let tasks = await TaskModel.find({userId:id})
+	 return tasks
+}
+
+module.exports = { getTasks, postTasks,patchTask,getUsersTasks };

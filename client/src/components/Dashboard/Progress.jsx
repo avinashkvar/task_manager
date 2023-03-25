@@ -21,12 +21,14 @@ import {
 	ModalCloseButton,
 	useDisclosure,
 	HStack,
+	Input
 } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSprints } from '../../redux/action';
 import { useState } from 'react';
 import Loader from '../Loader/Loader';
 const Progress = ({ item }) => {
+	const [search,setSearch] = useState("")
 	const dispatch = useDispatch();
 	const [loader, setLoader] = useState(false);
 	const { isOpen, onOpen, onClose } = useDisclosure();
@@ -118,8 +120,9 @@ const Progress = ({ item }) => {
 							<ModalHeader>Assign to</ModalHeader>
 							<ModalCloseButton />
 							<ModalBody>
+								<Input onChange={(e)=>setSearch(e.target.value)} placeholder="search users"></Input>
 								{users
-									// .filter((e) => e.name.toLowerCase().includes(search))
+									.filter((e) => e.name.toLowerCase().includes(search))
 									.map((e) => (
 										<Card
 											p="5px 10px 5px 10px"

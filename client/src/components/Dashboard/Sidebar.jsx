@@ -56,26 +56,27 @@ const Sidebar = () => {
 						width="80%"
 						onChange={(e) => setSearch(e.target.value)}
 					></Input>
-					{users
-						.filter((e) => e.name.toLowerCase().includes(search))
-						.map((e) => (
-							<Card
-								p="5px 10px 5px 10px"
-								width="80%"
-								transition="all 0.2s ease-in-out"
-								_hover={{
-									background: 'rgb(179,212,255)',
-									cursor: 'pointer',
-									width: '90%',
-									transition: 'all 0.2s ease-in-out',
-								}}
-							>
-								<HStack>
-									<Avatar src={e.imageUrl}></Avatar>{' '}
-									<Text fontWeight="bold">{e.name}</Text>
-								</HStack>
-							</Card>
-						))}
+					{users.length > 0 &&
+						users
+							.filter((e) => e.name.toLowerCase().includes(search))
+							.map((e) => (
+								<Card
+									p="5px 10px 5px 10px"
+									width="80%"
+									transition="all 0.2s ease-in-out"
+									_hover={{
+										background: 'rgb(179,212,255)',
+										cursor: 'pointer',
+										width: '90%',
+										transition: 'all 0.2s ease-in-out',
+									}}
+								>
+									<HStack>
+										<Avatar src={e && e.imageUrl}></Avatar>{' '}
+										<Text fontWeight="bold">{e && e.name}</Text>
+									</HStack>
+								</Card>
+							))}
 				</VStack>
 			)}
 		</>
