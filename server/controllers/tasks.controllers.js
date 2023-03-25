@@ -14,5 +14,11 @@ async function postTasks(body, id) {
 	await SprintModel.findByIdAndUpdate({ _id: id }, { tasks });
 	return task;
 }
+async function patchTask(body,id){
+	console.log(body)
+	let task = await TaskModel.findByIdAndUpdate({_id:id},body)
+	console.log(task);
+	return task;
+}
 
-module.exports = { getTasks, postTasks };
+module.exports = { getTasks, postTasks,patchTask };

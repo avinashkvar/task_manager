@@ -62,12 +62,16 @@ const Sprint = ({ tasks, id }) => {
 			>
 				<div
 					style={{
-						width: '100%',
+						width: 'auto',
 						boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px',
 						padding: '20px',
+						height: '500px',
+						overflow: 'scroll',
 					}}
 				>
-					<Text>Progress</Text>
+					<Text fontWeight="bold" fontSize="23px">
+						Progress
+					</Text>
 					{tasks.map((e) => (
 						<div>
 							{e.status === 'progress' ? <Progress item={e} /> : null}
@@ -76,24 +80,31 @@ const Sprint = ({ tasks, id }) => {
 				</div>
 				<div
 					style={{
-						width: '100%',
 						boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px',
 						padding: '20px',
+						height: '500px',
+						overflow: 'scroll',
 					}}
 				>
-					<Text>Done</Text>
+					<Text fontWeight="bold" fontSize="23px">
+						Done
+					</Text>
 					{tasks.map((e) => (
 						<div>{e.status === 'done' ? <Done item={e} /> : null}</div>
 					))}
 				</div>
 				<div
 					style={{
-						width: '100%',
+						
 						boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px',
 						padding: '20px',
+						height: '500px',
+						overflow: 'scroll',
 					}}
 				>
-					<Text>Pending</Text>
+					<Text fontWeight="bold" fontSize="23px">
+						Pending
+					</Text>
 					{tasks.map((e) => (
 						<div>
 							{e.status === 'pending' ? <Pending item={e} /> : null}

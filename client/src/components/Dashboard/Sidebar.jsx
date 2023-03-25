@@ -9,7 +9,7 @@ import {
 	Input,
 } from '@chakra-ui/react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getUsers } from '../../redux/action';
+import { getSprints, getUsers } from '../../redux/action';
 import { useState } from 'react';
 const Sidebar = () => {
 	const dispatch = useDispatch();
@@ -18,9 +18,21 @@ const Sidebar = () => {
 	useEffect(() => {
 		dispatch(getUsers());
 	}, [dispatch]);
+
+	const addSprint = () => {
+		fetch('http://localhost:3001/sprints', {
+			method: 'POST',
+			headers: {
+				'Content-type': 'application/json',
+			},
+			body: JSON.stringify({ tasks: [] }),
+		}).then(()=>{
+            dispatch(getSprints())
+        })
+	};
 	return (
 		<VStack>
-			<Button colorScheme="blue" width="80%" m="10px">
+			<Button colorScheme="blue" width="80%" m="10px" onClick={addSprint}>
 				Add Sprint
 			</Button>
 			<Text fontWeight="bold" fontSize="24px">
