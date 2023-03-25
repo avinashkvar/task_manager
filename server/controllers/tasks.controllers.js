@@ -7,7 +7,7 @@ async function getTasks() {
 }
 
 async function postTasks(body, id) {
-	let task = await TaskModel.create(body);
+	let task = await TaskModel.create({...body,status:'progress'});
 	let tasks = await SprintModel.findById(id)
 	tasks = tasks.tasks;
 	tasks.push(task._id);
