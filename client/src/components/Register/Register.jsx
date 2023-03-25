@@ -9,20 +9,30 @@ import {
 	FormLabel,
 } from '@chakra-ui/react';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const Register = () => {
 	const [info, setInfo] = useState(new FormData());
+	const [validate, setValidate] = useState({
+		name: '',
+		email: '',
+		password: '',
+		photo: '',
+	});
 
 	const handleChange = (e) => {
 		//console.log(e.target.files[0])
 		if (e.target.files) {
-			 info.append([e.target.id],e.target.files[0])
-             setInfo(info)
+			info.append([e.target.id], e.target.files[0]);
+			setInfo(info);
 		} else {
-			info.append([e.target.id],e.target.value)
-            setInfo(info)
+			info.append([e.target.id], e.target.value);
+			setInfo(info);
 		}
-		
+		setValidate({
+			...validate,
+			[e.target.id]: e.target.value,
+		});
 	};
 
 	const handleSubmit = (e) => {
@@ -30,14 +40,18 @@ const Register = () => {
 		fetch('http://localhost:3001/register', {
 			method: 'POST',
 			body: info,
-		});
+		})
+			.then(() => 'null')
+			.catch((err) => console.log(err));
 	};
 	return (
 		<Center>
 			<Card p="20px" margin="30px" width={['100%', '75%', '40%']}>
 				<FormControl isRequired>
 					<Center>
-						<Text fontWeight="bold">SignUp</Text>
+						<Text fontWeight="bold" fontSize="30px">
+							SignUp
+						</Text>
 					</Center>
 					<FormLabel>Enter your name</FormLabel>
 					<Input
@@ -68,9 +82,25 @@ const Register = () => {
 						id="photo"
 						onChange={handleChange}
 					></Input>
-					<Button width="100%" colorScheme="orange" onClick={handleSubmit}>
+					<Button
+						isDisabled={
+							!validate.name ||
+							!validate.photo ||
+							!validate.email ||
+							!validate.password
+						}
+						width="100%"
+						colorScheme="orange"
+						onClick={handleSubmit}
+					>
 						Submit
 					</Button>
+					<Text float="right" p="5px">
+						Already have an Account?{' '}
+						<Link style={{ color: 'blue' }} to="/login">
+							Sing In
+						</Link>
+					</Text>
 				</FormControl>
 			</Card>
 		</Center>
