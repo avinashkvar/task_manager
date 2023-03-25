@@ -7,12 +7,15 @@ import {
 	Text,
 	FormControl,
 	FormLabel,
+	useToast,
 } from '@chakra-ui/react';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Register = () => {
-	const [info, setInfo] = useState(new FormData());
+	const toast = useToast();
+	const navigate = useNavigate();
+	//const [info, setInfo] = useState(new FormData());
 	const [validate, setValidate] = useState({
 		name: '',
 		email: '',
@@ -23,26 +26,48 @@ const Register = () => {
 	const handleChange = (e) => {
 		//console.log(e.target.files[0])
 		if (e.target.files) {
-			info.append([e.target.id], e.target.files[0]);
-			setInfo(info);
+			setValidate({
+				...validate,
+				[e.target.id]: e.target.files[0],
+			});
 		} else {
-			info.append([e.target.id], e.target.value);
-			setInfo(info);
+			setValidate({
+				...validate,
+				[e.target.id]: e.target.value,
+			});
 		}
-		setValidate({
-			...validate,
-			[e.target.id]: e.target.value,
-		});
 	};
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
+		const info = new FormData();
+		for (let key in validate) {
+			info.append(key, validate[key]);
+		}
 		fetch('http://localhost:3001/register', {
 			method: 'POST',
 			body: info,
 		})
-			.then(() => 'null')
-			.catch((err) => console.log(err));
+			.then((res) => res.json())
+			.then((res) => {
+				if (!res.name) {
+					toast({
+						title: res,
+						status: 'error',
+						duration: 2000,
+						isClosable: true,
+					});
+					return;
+				}
+				toast({
+					title: 'Account created.',
+					description: "We've created your account for you.",
+					status: 'success',
+					duration: 2000,
+					isClosable: true,
+				});
+				navigate('/login');
+			});
 	};
 	return (
 		<Center>

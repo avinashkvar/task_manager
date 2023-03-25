@@ -19,13 +19,13 @@ userRouter.get('/loginUser', (req, res) => {
 				const user = jwt.decode(token);
 				return res.send(user);
 			} else {
-				return res.status(400).json('invalid token provided');
+				return res.status(200).json('invalid token provided');
 			}
 		} catch (error) {
-			return res.status(400).json(error);
+			return res.status(200).json(error);
 		}
 	} else {
-		return res.status(400).json('no token provided');
+		return res.status(200).json('no token provided');
 	}
 });
 
@@ -35,19 +35,19 @@ userRouter.post('/login', async (req, res) => {
 		const token = await login(body);
 		return res.send({ data: token });
 	} catch (error) {
-		return res.status(404).json(error.message);
+		return res.status(200).json(error.message);
 	}
 });
 
 userRouter.post('/register', async (req, res) => {
 	const body = req.body;
     const file = req.files
-	//console.log(file,body)
+	console.log(file,body)
 	try {
 		const user = await register(body,file);
 		return res.send(user);
 	} catch (error) {
-		return res.status(404).json(error.message);
+		return res.status(200).json(error.message);
 	}
 });
 
@@ -56,7 +56,7 @@ userRouter.get('/users', async (req, res) => {
 		const users = await getAlluser();
 		return res.send(users);
 	} catch (error) {
-		return res.status(400).json(error);
+		return res.status(200).json(error);
 	}
 });
 
