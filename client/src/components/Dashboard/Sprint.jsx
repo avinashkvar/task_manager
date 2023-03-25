@@ -17,13 +17,27 @@ import {
 	ModalCloseButton,
 	ModalBody,
 	ModalFooter,
-    VStack,
-    Input,
-    Select,
+	VStack,
+	Input,
+	Select,
 } from '@chakra-ui/react';
 import { AiOutlinePlus } from 'react-icons/ai';
-const Sprint = ({ tasks }) => {
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getSprints, postTask } from '../../redux/action';
+import Progress from './Progress';
+import Done from './Done';
+import Pending from './Pending';
+const Sprint = ({ tasks, id }) => {
+	const [title, setTitle] = useState('');
+	const user = useSelector((store) => store.user);
+	const dispatch = useDispatch();
 	const { isOpen, onOpen, onClose } = useDisclosure();
+	const handleClick = () => {
+		dispatch(postTask({ title, userId: user._id }, id)).then(() => {
+			dispatch(getSprints()).then(() => onClose());
+		});
+	};
 	return (
 		<div
 			style={{
@@ -38,34 +52,54 @@ const Sprint = ({ tasks }) => {
 				Add Tasks
 				<Icon as={AiOutlinePlus}></Icon>
 			</Button>
+
 			<div
 				style={{
 					display: 'flex',
-					gap: '20px',
-					boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px',
-					padding: '10px',
-					margin: '10px',
+					gap: '10px',
+					justifyContent: 'space-evenly',
 				}}
 			>
-				{tasks.map((e) => (
-					<Card>
-						<CardHeader>
-							<Flex alignItems="center">
-								<Avatar src={e.userId.imageUrl}></Avatar>
-								<Text ml="10px">{e.userId.name}</Text>
-							</Flex>
-						</CardHeader>
-						<CardBody>
-							<Text fontWeight="bold">{e.title}</Text>
-						</CardBody>
-						<CardFooter>
-							<Flex>
-								<Button>Assign To</Button>
-                                <Button>{e.status}</Button>
-							</Flex>
-						</CardFooter>
-					</Card>
-				))}
+				<div
+					style={{
+						width: '100%',
+						boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px',
+						padding: '20px',
+					}}
+				>
+					<Text>Progress</Text>
+					{tasks.map((e) => (
+						<div>
+							{e.status === 'progress' ? <Progress item={e} /> : null}
+						</div>
+					))}
+				</div>
+				<div
+					style={{
+						width: '100%',
+						boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px',
+						padding: '20px',
+					}}
+				>
+					<Text>Done</Text>
+					{tasks.map((e) => (
+						<div>{e.status === 'done' ? <Done item={e} /> : null}</div>
+					))}
+				</div>
+				<div
+					style={{
+						width: '100%',
+						boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px',
+						padding: '20px',
+					}}
+				>
+					<Text>Pending</Text>
+					{tasks.map((e) => (
+						<div>
+							{e.status === 'pending' ? <Pending item={e} /> : null}
+						</div>
+					))}
+				</div>
 			</div>
 			<Modal onClose={onClose} isOpen={isOpen} isCentered>
 				<ModalOverlay />
@@ -73,12 +107,21 @@ const Sprint = ({ tasks }) => {
 					<ModalHeader>Add Task</ModalHeader>
 					<ModalCloseButton />
 					<ModalBody>
-                        <VStack>
-                             <Input placeholder='Enter Title'></Input>
-                        </VStack>
-                    </ModalBody>
+						<VStack>
+							<Input
+								placeholder="Enter Title"
+								onChange={(e) => setTitle(e.target.value)}
+							></Input>
+						</VStack>
+					</ModalBody>
 					<ModalFooter>
-						<Button colorScheme="green">Add</Button>
+						<Button
+							isDisabled={!title}
+							colorScheme="green"
+							onClick={handleClick}
+						>
+							Add
+						</Button>
 						<Button onClick={onClose}>Close</Button>
 					</ModalFooter>
 				</ModalContent>

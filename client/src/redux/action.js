@@ -37,3 +37,14 @@ export const getUsers = () => async (dispatch) => {
 	dispatch(createUsers(data));
 	return data;
 };
+
+export const postTask = (value,id)=>async(dispatch)=>{
+    const data = await fetch(`http://localhost:3001/tasks/${id}`,{
+        method:'POST',
+        headers:{
+            'Content-type':"application/json"
+        },
+        body:JSON.stringify(value)
+    }).then(res=>res.json())
+    return data
+}

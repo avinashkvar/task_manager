@@ -11,7 +11,7 @@ const MainContent = () => {
 		dispatch(getSprints()).then((res) => console.log(res));
 	}, [dispatch]);
 	return <div>{
-        spirnts.map((e,i)=><Sprint key={i} tasks={e.tasks}/>)
+        spirnts.map((e,i)=><Sprint key={i} tasks={e.tasks} id={e._id}/>)
     }</div>;
 };
 
