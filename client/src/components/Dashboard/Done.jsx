@@ -80,7 +80,7 @@ const Done = ({ item }) => {
 
 					<CardFooter>
 						<Flex gap={2}>
-							<Button>Assign To</Button>
+							<Button onClick={onOpen}>Assign To</Button>
 							<Menu>
 								<MenuButton
 									background="green"
