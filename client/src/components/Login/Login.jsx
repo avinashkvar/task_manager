@@ -7,13 +7,15 @@ import {
 	Text,
 	FormControl,
 	FormLabel,
-  useToast,
+	useToast,
 } from '@chakra-ui/react';
 import { useState } from 'react';
-import { Link,useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import Loader from '../Loader/Loader';
 const Login = () => {
-  const toast = useToast();
-  const navigate = useNavigate();
+	const toast = useToast();
+	const navigate = useNavigate();
+	const [loader, setLoader] = useState(false);
 	const [login, setLogin] = useState({
 		email: '',
 		password: '',
@@ -25,6 +27,7 @@ const Login = () => {
 		});
 	};
 	const handleSubmit = (e) => {
+		setLoader(true);
 		e.preventDefault();
 		fetch('https://paypal-edfn.onrender.com/login', {
 			method: 'POST',
@@ -35,6 +38,7 @@ const Login = () => {
 		})
 			.then((res) => res.json())
 			.then((res) => {
+				setLoader(false);
 				if (!res.data) {
 					toast({
 						title: res,
@@ -56,43 +60,47 @@ const Login = () => {
 	};
 	return (
 		<Center>
-			<Card p="20px" margin="30px" width={['100%', '75%', '40%']}>
-				<FormControl isRequired>
-					<Center>
-						<Text fontWeight="bold" fontSize="30px">
-							SignIn
+			{loader ? (
+				<Loader />
+			) : (
+				<Card p="20px" margin="30px" width={['100%', '75%', '40%']}>
+					<FormControl isRequired>
+						<Center>
+							<Text fontWeight="bold" fontSize="30px">
+								SignIn
+							</Text>
+						</Center>
+						<FormLabel>Enter your email</FormLabel>
+						<Input
+							margin="10px"
+							placeholder="Enter your email"
+							id="email"
+							onChange={handleChange}
+						></Input>
+						<FormLabel>Enter your password</FormLabel>
+						<Input
+							margin="10px"
+							placeholder="Enter your password"
+							id="password"
+							onChange={handleChange}
+						></Input>
+						<Button
+							isDisabled={!login.email || !login.password}
+							width="100%"
+							colorScheme="orange"
+							onClick={handleSubmit}
+						>
+							Submit
+						</Button>
+						<Text float="right" p="5px">
+							Don't have an Account?{' '}
+							<Link style={{ color: 'blue' }} to="/">
+								Sing Up
+							</Link>
 						</Text>
-					</Center>
-					<FormLabel>Enter your email</FormLabel>
-					<Input
-						margin="10px"
-						placeholder="Enter your email"
-						id="email"
-						onChange={handleChange}
-					></Input>
-					<FormLabel>Enter your password</FormLabel>
-					<Input
-						margin="10px"
-						placeholder="Enter your password"
-						id="password"
-						onChange={handleChange}
-					></Input>
-					<Button
-						isDisabled={!login.email || !login.password}
-						width="100%"
-						colorScheme="orange"
-						onClick={handleSubmit}
-					>
-						Submit
-					</Button>
-					<Text float="right" p="5px">
-						Don't have an Account?{' '}
-						<Link style={{ color: 'blue' }} to="/">
-							Sing Up
-						</Link>
-					</Text>
-				</FormControl>
-			</Card>
+					</FormControl>
+				</Card>
+			)}
 		</Center>
 	);
 };

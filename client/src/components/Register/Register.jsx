@@ -11,11 +11,12 @@ import {
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import Loader from '../Loader/Loader';
 
 const Register = () => {
 	const toast = useToast();
 	const navigate = useNavigate();
-	//const [info, setInfo] = useState(new FormData());
+	const [loader, setLoader] = useState(false);
 	const [validate, setValidate] = useState({
 		name: '',
 		email: '',
@@ -39,6 +40,7 @@ const Register = () => {
 	};
 
 	const handleSubmit = (e) => {
+		setLoader(true);
 		e.preventDefault();
 		const info = new FormData();
 		for (let key in validate) {
@@ -50,6 +52,7 @@ const Register = () => {
 		})
 			.then((res) => res.json())
 			.then((res) => {
+				setLoader(false);
 				if (!res.name) {
 					toast({
 						title: res,
@@ -71,63 +74,67 @@ const Register = () => {
 	};
 	return (
 		<Center>
-			<Card p="20px" margin="30px" width={['100%', '75%', '40%']}>
-				<FormControl isRequired>
-					<Center>
-						<Text fontWeight="bold" fontSize="30px">
-							SignUp
+			{loader ? (
+				<Loader />
+			) : (
+				<Card p="20px" margin="30px" width={['100%', '75%', '40%']}>
+					<FormControl isRequired>
+						<Center>
+							<Text fontWeight="bold" fontSize="30px">
+								SignUp
+							</Text>
+						</Center>
+						<FormLabel>Enter your name</FormLabel>
+						<Input
+							margin="10px"
+							placeholder="Enter your name"
+							id="name"
+							onChange={handleChange}
+						></Input>
+						<FormLabel>Enter your email</FormLabel>
+						<Input
+							margin="10px"
+							placeholder="Enter your email"
+							id="email"
+							onChange={handleChange}
+						></Input>
+						<FormLabel>Enter your password</FormLabel>
+						<Input
+							margin="10px"
+							placeholder="Enter your password"
+							id="password"
+							onChange={handleChange}
+						></Input>
+						<FormLabel>Choose your Profile Pic</FormLabel>
+						<Input
+							margin="10px"
+							type="file"
+							placeholder="Select Photo"
+							id="photo"
+							onChange={handleChange}
+						></Input>
+						<Button
+							isDisabled={
+								!validate.name ||
+								!validate.photo ||
+								!validate.email ||
+								!validate.password
+							}
+							width="100%"
+							colorScheme="orange"
+							onClick={handleSubmit}
+						>
+							Submit
+						</Button>
+						<Text float="right" p="5px">
+							Already have an Account?{' '}
+							<Link style={{ color: 'blue' }} to="/login">
+								Sing In
+							</Link>
 						</Text>
-					</Center>
-					<FormLabel>Enter your name</FormLabel>
-					<Input
-						margin="10px"
-						placeholder="Enter your name"
-						id="name"
-						onChange={handleChange}
-					></Input>
-					<FormLabel>Enter your email</FormLabel>
-					<Input
-						margin="10px"
-						placeholder="Enter your email"
-						id="email"
-						onChange={handleChange}
-					></Input>
-					<FormLabel>Enter your password</FormLabel>
-					<Input
-						margin="10px"
-						placeholder="Enter your password"
-						id="password"
-						onChange={handleChange}
-					></Input>
-					<FormLabel>Choose your Profile Pic</FormLabel>
-					<Input
-						margin="10px"
-						type="file"
-						placeholder="Select Photo"
-						id="photo"
-						onChange={handleChange}
-					></Input>
-					<Button
-						isDisabled={
-							!validate.name ||
-							!validate.photo ||
-							!validate.email ||
-							!validate.password
-						}
-						width="100%"
-						colorScheme="orange"
-						onClick={handleSubmit}
-					>
-						Submit
-					</Button>
-					<Text float="right" p="5px">
-						Already have an Account?{' '}
-						<Link style={{ color: 'blue' }} to="/login">
-							Sing In
-						</Link>
-					</Text>
-				</FormControl>
-			</Card>
+					</FormControl>
+				</Card>
+			)}
 		</Center>
 	);
 };

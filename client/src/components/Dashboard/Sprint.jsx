@@ -28,14 +28,21 @@ import { getSprints, postTask } from '../../redux/action';
 import Progress from './Progress';
 import Done from './Done';
 import Pending from './Pending';
+import Loader from '../Loader/Loader';
+
 const Sprint = ({ tasks, id }) => {
 	const [title, setTitle] = useState('');
+	const [loader, setLoader] = useState(false);
 	const user = useSelector((store) => store.user);
 	const dispatch = useDispatch();
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const handleClick = () => {
+		setLoader(true);
 		dispatch(postTask({ title, userId: user._id }, id)).then(() => {
-			dispatch(getSprints()).then(() => onClose());
+			dispatch(getSprints()).then(() => {
+				setLoader(false);
+				onClose();
+			});
 		});
 	};
 	return (
@@ -53,7 +60,7 @@ const Sprint = ({ tasks, id }) => {
 				<Icon as={AiOutlinePlus}></Icon>
 			</Button>
 
-			<div
+			{ loader ? <Loader/> : <div
 				style={{
 					display: 'flex',
 					gap: '10px',
@@ -95,7 +102,6 @@ const Sprint = ({ tasks, id }) => {
 				</div>
 				<div
 					style={{
-						
 						boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px',
 						padding: '20px',
 						height: '500px',
@@ -111,7 +117,7 @@ const Sprint = ({ tasks, id }) => {
 						</div>
 					))}
 				</div>
-			</div>
+			</div>}
 			<Modal onClose={onClose} isOpen={isOpen} isCentered>
 				<ModalOverlay />
 				<ModalContent>
