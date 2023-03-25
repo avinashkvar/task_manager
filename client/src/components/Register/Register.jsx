@@ -44,7 +44,7 @@ const Register = () => {
 		for (let key in validate) {
 			info.append(key, validate[key]);
 		}
-		fetch('http://localhost:3001/register', {
+		fetch('https://paypal-edfn.onrender.com/register', {
 			method: 'POST',
 			body: info,
 		})

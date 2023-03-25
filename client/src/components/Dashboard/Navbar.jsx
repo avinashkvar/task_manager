@@ -9,7 +9,7 @@ const Navbar = () => {
 	const user = useSelector((store) => store.user);
 	const token = localStorage.getItem('token');
 	useEffect(() => {
-		fetch('http://localhost:3001/loginUser', {
+		fetch('https://paypal-edfn.onrender.com/loginUser', {
 			headers: {
 				Authorization: `Bearer ${token}`,
 			},

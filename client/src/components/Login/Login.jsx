@@ -26,7 +26,7 @@ const Login = () => {
 	};
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		fetch('http://localhost:3001/login', {
+		fetch('https://paypal-edfn.onrender.com/login', {
 			method: 'POST',
 			headers: {
 				'Content-type': 'application/json',
@@ -50,8 +50,8 @@ const Login = () => {
 					duration: 2000,
 					isClosable: true,
 				});
-        localStorage.setItem('token',res.data)
-        navigate('/dashboard')
+				localStorage.setItem('token', res.data);
+				navigate('/dashboard');
 			});
 	};
 	return (

@@ -12,16 +12,27 @@ import {
 	MenuButton,
 	MenuList,
 	MenuItem,
+	Modal,
+	ModalOverlay,
+	ModalContent,
+	ModalHeader,
+	ModalFooter,
+	ModalBody,
+	ModalCloseButton,
+	useDisclosure,
+	HStack,
 } from '@chakra-ui/react';
-import { useDispatch } from 'react-redux';
+import { useDispatch,useSelector } from 'react-redux';
 import { getSprints } from '../../redux/action';
 const Done = ({ item }) => {
+    const { isOpen, onOpen, onClose } = useDisclosure();
+		const users = useSelector((store) => store.users);
 	const dispatch = useDispatch();
 	const handleClick = (value, id) => {
 		let payload = {
 			status: value,
 		};
-		fetch(`http://localhost:3001/tasks/${id}`, {
+		fetch(`https://paypal-edfn.onrender.com/tasks/${id}`, {
 			method: 'PATCH',
 			headers: {
 				'Content-type': 'application/json',
@@ -29,6 +40,22 @@ const Done = ({ item }) => {
 			body: JSON.stringify(payload),
 		}).then(() => dispatch(getSprints()));
 	};
+    const handleSubmit = (id, userId) => {
+			console.log(id, userId);
+			const payload = {
+				userId,
+			};
+			fetch(`https://paypal-edfn.onrender.com/tasks/${id}`, {
+				method: 'PATCH',
+				headers: {
+					'Content-type': 'application/json',
+				},
+				body: JSON.stringify(payload),
+			}).then(() => {
+				dispatch(getSprints());
+				onClose();
+			});
+		};
 	return (
 		<div>
 			<Card m={2}>
@@ -47,7 +74,7 @@ const Done = ({ item }) => {
 					<Flex gap={2}>
 						<Button>Assign To</Button>
 						<Menu>
-							<MenuButton background="orange" color="white" as={Button}>
+							<MenuButton background="green" color="white" as={Button}>
 								{item.status}
 							</MenuButton>
 							<MenuList>
@@ -68,6 +95,39 @@ const Done = ({ item }) => {
 						</Menu>
 					</Flex>
 				</CardFooter>
+				<Modal onClose={onClose} isOpen={isOpen} scrollBehavior={'inside'}>
+					<ModalOverlay />
+					<ModalContent>
+						<ModalHeader>Assign to</ModalHeader>
+						<ModalCloseButton />
+						<ModalBody>
+							{users
+								// .filter((e) => e.name.toLowerCase().includes(search))
+								.map((e) => (
+									<Card
+										p="5px 10px 5px 10px"
+										width="100%"
+										transition="all 0.2s ease-in-out"
+										_hover={{
+											background: 'rgb(179,212,255)',
+											cursor: 'pointer',
+											width: '90%',
+											transition: 'all 0.2s ease-in-out',
+										}}
+										onClick={() => handleSubmit(item._id, e._id)}
+									>
+										<HStack>
+											<Avatar src={e.imageUrl}></Avatar>{' '}
+											<Text fontWeight="bold">{e.name}</Text>
+										</HStack>
+									</Card>
+								))}
+						</ModalBody>
+						<ModalFooter>
+							<Button onClick={onClose}>Close</Button>
+						</ModalFooter>
+					</ModalContent>
+				</Modal>
 			</Card>
 		</div>
 	);

@@ -24,8 +24,8 @@ export const createUsers = (value) => {
 };
 
 export const getSprints = () => async (dispatch) => {
-	const data = await fetch('http://localhost:3001/sprints').then((res) =>
-		res.json(),
+	const data = await fetch('https://paypal-edfn.onrender.com/sprints').then(
+		(res) => res.json(),
 	);
     console.log('data',data)
 	dispatch(createSprints(data));
@@ -33,18 +33,20 @@ export const getSprints = () => async (dispatch) => {
 };
 
 export const getUsers = () => async (dispatch) => {
-	const data = await fetch('http://localhost:3001/users').then((res) => res.json());
+	const data = await fetch('https://paypal-edfn.onrender.com/users').then(
+		(res) => res.json(),
+	);
 	dispatch(createUsers(data));
 	return data;
 };
 
 export const postTask = (value,id)=>async(dispatch)=>{
-    const data = await fetch(`http://localhost:3001/tasks/${id}`,{
-        method:'POST',
-        headers:{
-            'Content-type':"application/json"
-        },
-        body:JSON.stringify(value)
-    }).then(res=>res.json())
+    const data = await fetch(`https://paypal-edfn.onrender.com/tasks/${id}`, {
+			method: 'POST',
+			headers: {
+				'Content-type': 'application/json',
+			},
+			body: JSON.stringify(value),
+		}).then((res) => res.json());
     return data
 }
