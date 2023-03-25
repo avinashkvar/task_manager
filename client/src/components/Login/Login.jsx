@@ -50,6 +50,7 @@ const Login = () => {
 					duration: 2000,
 					isClosable: true,
 				});
+        localStorage.setItem('token',res.data)
         navigate('/dashboard')
 			});
 	};
