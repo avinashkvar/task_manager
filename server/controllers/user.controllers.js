@@ -62,4 +62,9 @@ async function register({ name, email, password }, { photo }) {
 	return user;
 }
 
-module.exports = { login, register, getAlluser };
+async function getSingleUser(id){
+	const user = await UserModel.findById({_id:id})
+	return user
+}
+
+module.exports = { login, register, getAlluser,getSingleUser };

@@ -12,6 +12,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getSprints, getUsers } from '../../redux/action';
 import { useState } from 'react';
 import Loader from '../Loader/Loader';
+import { Link } from 'react-router-dom';
 const Sidebar = () => {
 	const dispatch = useDispatch();
 	const [loader, setLoader] = useState(false);
@@ -71,10 +72,12 @@ const Sidebar = () => {
 										transition: 'all 0.2s ease-in-out',
 									}}
 								>
-									<HStack>
-										<Avatar src={e && e.imageUrl}></Avatar>{' '}
-										<Text fontWeight="bold">{e && e.name}</Text>
-									</HStack>
+									<Link to={`/dashboard/user/${e._id}`}>
+										<HStack>
+											<Avatar src={e && e.imageUrl}></Avatar>{' '}
+											<Text fontWeight="bold">{e && e.name}</Text>
+										</HStack>
+									</Link>
 								</Card>
 							))}
 				</VStack>

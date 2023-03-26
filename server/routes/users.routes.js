@@ -4,6 +4,7 @@ const {
 	register,
 	login,
 	getAlluser,
+	getSingleUser,
 } = require('../controllers/user.controllers');
 const userRouter = express.Router();
 
@@ -41,10 +42,10 @@ userRouter.post('/login', async (req, res) => {
 
 userRouter.post('/register', async (req, res) => {
 	const body = req.body;
-    const file = req.files
-	console.log(file,body)
+	const file = req.files;
+	console.log(file, body);
 	try {
-		const user = await register(body,file);
+		const user = await register(body, file);
 		return res.send(user);
 	} catch (error) {
 		return res.status(200).json(error.message);
@@ -60,4 +61,14 @@ userRouter.get('/users', async (req, res) => {
 	}
 });
 
-module.exports = userRouter
+userRouter.get('/user/:id', async (req, res) => {
+	const id = req.params.id;
+	try {
+		const user = await getSingleUser(id);
+		return res.status(200).send(user);
+	} catch (error) {
+		return res.status(200).json(error.message);
+	}
+});
+
+module.exports = userRouter;
