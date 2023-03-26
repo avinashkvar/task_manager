@@ -25,4 +25,9 @@ async function getUsersTasks(id){
 	 return tasks
 }
 
-module.exports = { getTasks, postTasks,patchTask,getUsersTasks };
+async function deleteTask(id){
+	const task = await TaskModel.findByIdAndDelete({_id:id})
+	return task;
+}
+
+module.exports = { getTasks, postTasks,patchTask,getUsersTasks ,deleteTask};

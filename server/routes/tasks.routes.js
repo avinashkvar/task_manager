@@ -4,6 +4,7 @@ const {
 	getTasks,
 	patchTask,
 	getUsersTasks,
+	deleteTask,
 } = require('../controllers/tasks.controllers');
 
 const taskRouter = express.Router();
@@ -48,5 +49,15 @@ taskRouter.get('/tasks/:id', async (req, res) => {
 		return res.status(200).json(error);
 	}
 });
+
+taskRouter.delete('/task/:id',async (req,res)=>{
+	const id = req.params.id;
+	try {
+		const data = await deleteTask(id);
+		return res.status(201).send(data);
+	} catch (error) {
+		return res.status(200).json(error);
+	}
+})
 
 module.exports = taskRouter;
