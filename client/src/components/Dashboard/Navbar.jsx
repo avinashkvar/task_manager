@@ -1,10 +1,25 @@
 import React from 'react';
-import { Avatar, Text, Flex } from '@chakra-ui/react';
+import {
+	Avatar,
+	Text,
+	Flex,
+	Popover,
+	PopoverTrigger,
+	PopoverContent,
+	PopoverHeader,
+	PopoverBody,
+	PopoverArrow,
+	PopoverCloseButton,
+	Portal,
+	Button,
+} from '@chakra-ui/react';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createUser } from '../../redux/action';
+import { useNavigate } from 'react-router-dom';
 const Navbar = () => {
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
 	const user = useSelector((store) => store.user);
 	const token = localStorage.getItem('token');
 	useEffect(() => {
@@ -18,6 +33,11 @@ const Navbar = () => {
 				dispatch(createUser(res));
 			});
 	}, []);
+
+	const handleLogout = () => {
+		localStorage.removeItem('token');
+		navigate('/login');
+	};
 	return (
 		<Flex
 			justifyContent="space-between"
@@ -30,10 +50,26 @@ const Navbar = () => {
 			</Text>
 
 			<Flex alignItems="center">
-				<Text mr="10px" fontWeight="bold">
-					{user && user.name}
-				</Text>
-				<Avatar mr="10px" src={user && user.imageUrl} />
+				<Popover>
+					<PopoverTrigger>
+						<Avatar mr="10px" src={user && user.imageUrl} />
+					</PopoverTrigger>
+					<Portal>
+						<PopoverContent>
+							<PopoverArrow />
+							<PopoverHeader>Hey! {user && user.name}</PopoverHeader>
+							<PopoverCloseButton />
+							<PopoverBody>
+								<Button
+									colorScheme="orange"
+									onClick={() => handleLogout()}
+								>
+									Logout
+								</Button>
+							</PopoverBody>
+						</PopoverContent>
+					</Portal>
+				</Popover>
 			</Flex>
 		</Flex>
 	);
